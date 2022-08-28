@@ -1,0 +1,50 @@
+site_name: Magma
+repo_url: https://github.com/Plethan/Magma
+repo_name: Plethan/Magma
+
+theme:
+  name: "material"
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
+  
+  palette:
+    scheme: magma-white
+
+
+
+  features:
+    - navigation.tabs
+    - navigation.top
+    - navigation.sections
+  icon:
+    repo: fontawesome/brands/github
+  font:
+    text: Inter
+    code: JetBrains Mono
+  
+extra_css:
+   - assets/extra.css
+
+
+nav:
+  - Home: index.md
+  - Tutorials:
+    - Get Started: Tutorial/index.md
+    - Fundamentals:
+      - Reactive Programming: Tutorial/Fundamentals/reactive.md
+      - Why Objects: Tutorial/Fundamentals/objects.md
+    - Basics:
+      - Storing State: Tutorial/Basics/Gems.md
+      - Observing State: Tutorial/Basics/Listeners.md
+      - Conputing: Tutorial/Basics/ReGem.md
+
+markdown_extensions:
+  - pymdownx.highlight
+  - footnotes
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
