@@ -485,6 +485,55 @@
 
             
           
+            
+              
+  
+  
+  
+    
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_4" type="checkbox" id="__nav_2_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_4">
+          Further Basics
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Further Basics" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_4">
+          <span class="md-nav__icon md-icon"></span>
+          Further Basics
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../Further/Match/" class="md-nav__link">
+        State Matching
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -553,26 +602,28 @@
 <p>Magma is built on the reactive programming principles, as such, you need to know what exactly is reactive programming, so that you can leverage Magma's features to it's best. </p>
 <hr />
 <h2 id="its-all-about-events"><strong>It's all about Events</strong></h2>
-<p>In Reactive Programming, you manage data with events, an event is simply enough, a notification that implies <strong><em>something has changed</em></strong> from an object to another, no matter their type.</p>
-<p>Consider the following pseudocode:</p>
-<div class="highlight"><pre><span></span><code><span class="n">object_1</span> <span class="o">=</span> <span class="n">object</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span>
-<span class="n">object_2</span> <span class="o">=</span> <span class="n">object</span><span class="p">((</span><span class="n">object_1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">))</span>
-
-<span class="n">object_1</span><span class="p">:</span><span class="n">set</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1">-- -&gt; {</span>
-    <span class="n">this</span> <span class="n">sends</span> <span class="n">an</span> <span class="n">notification</span> <span class="n">to</span> <span class="n">object_2</span> <span class="n">saying</span> <span class="n">that</span> <span class="n">it</span> <span class="n">changed</span>
-<span class="p">}</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">object_2</span><span class="p">:</span><span class="n">get</span><span class="p">())</span> <span class="c1">-- 2 </span>
+<p>In Reactive Programming, we manage data using "events", or more simply enough "notifications" from an object to another depending on the context.</p>
+<p>If we were to build a simple kills-cash leaderstats, we would first have a variable called <code>kills</code> and another called <code>cash</code>. </p>
+<p>Now, no matter how you want to calculate, either by a static value <em>(kills * 200)</em> or a dynamic value <em>(kills * random)</em>, you would always need to bind the cash to the kills variable. With Magma <em>(aka, reactive programming)</em>, we would use the <code>ReGem</code> and the <code>Gems</code> objects, and it would look like this:</p>
+<div class="highlight"><pre><span></span><code><span class="kd">local</span> <span class="n">kills</span> <span class="o">=</span> <span class="n">Gem</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">cash</span> <span class="o">=</span> <span class="n">ReGem</span><span class="p">(</span><span class="kr">function</span><span class="p">(</span><span class="n">use</span><span class="p">)</span>
+    <span class="kr">return</span> <span class="n">use</span><span class="p">(</span><span class="n">kills</span><span class="p">)</span> <span class="o">*</span> <span class="mi">200</span>
+<span class="kr">end</span><span class="p">)</span>
 </code></pre></div>
-<p>If we were to translate this to a diagram, it would look like:</p>
+<p>Now everything is clear at the first glance, and quite frankly, we have now a variable that is synced to to another!</p>
+<p>Now, when we change <code>kills</code>, it will update <code>cash</code>, like the following:</p>
+<p><div class="highlight"><pre><span></span><code><span class="n">kills</span><span class="p">:</span><span class="n">set</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">kills</span><span class="p">:</span><span class="n">get</span><span class="p">())</span> <span class="c1">-- 20,000</span>
+</code></pre></div>
+Internally, when you use the <code>set()</code> method, <code>kills</code> will send a notification to <code>cash</code>, at which <code>cash</code> responds by upating itself, which we can express in a diagram like this:</p>
 <pre class="mermaid"><code>
 flowchart LR
-    object_constructor--&gt; object_1
-
-    object_constructor--&gt;object_2
-
     object_1--&gt; id1{{UPDATE}} --&gt; object_2
 </code></pre>
+<details class="caution">
+<summary>Real Behavior</summary>
+<p>The actual behavior in Magma is that for example <code>kills</code> doesn't send "notification", but rather directly updates them instead. This difference is minor and doesn't change how you would code with Magma.</p>
+</details>
 <hr />
 <h2 id="worry-about-data-not-updates"><strong>Worry about data, not updates</strong></h2>
 <p>The beauty about reactive programming, especially when used in Magma, is that you shouldn't worry about updating your variables when their dependencies update. consider the following lua code:</p>
